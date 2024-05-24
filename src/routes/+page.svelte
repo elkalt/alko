@@ -5,6 +5,7 @@
   const topics = ['Sorting']
   
   function getPages(topic: string) {
+    // https://github.com/sveltejs/kit/issues/923#issuecomment-1567052262
     const directory = url
       .replace(/(.*?)\/src\/routes\//, '/')
       .replace(/(.*?)\/immutable\/pages\//, '/')
@@ -31,10 +32,12 @@
 </script>
 
 {#each topics as topic}
-  <h2>{topic}</h2>
+  <h1>{topic}</h1>
   <ul>
     {#each getPages(topic.toLowerCase()) as path}
-      <li><a href={path}>{path}</a></li>
+      <!-- truncate path, capitalize first letter, replace _ with space -->
+      {@const i = path.lastIndexOf("/") + 1}
+      <li><a href={path}>{(path.charAt(i).toLocaleUpperCase() + path.slice(i + 1)).replaceAll("_", " ")}</a></li>
     {/each}
   </ul>
 {/each}

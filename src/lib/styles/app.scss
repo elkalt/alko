@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Sedan+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap');
+@import "variables.scss";
+
+body {
+  height: 100%;
+  background-color: var(--background);
+  font-family: 'Quattrocento', serif;
+  color: var(--text-primary);
+}
+
+h1, h2 {
+  font-family: 'Sedan SC', serif;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--secondary);
+  }
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

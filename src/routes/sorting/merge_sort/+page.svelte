@@ -27,21 +27,21 @@
   let rightFillColors: string[];
   $: {
     finalFillColors = slicedArray.map((_, i) => {
-      if (i < currentArrayLeftIndex || i > currentArrayRightIndex) return 'gray';
-      return 'white';
+      if (i < currentArrayLeftIndex || i > currentArrayRightIndex) return 'var(--background-secondary)';
+      return 'transparent';
     });
 
     if (merging) {
-      finalFillColors[insertIndex] = 'red';
+      finalFillColors[insertIndex] = 'var(--tertiary)';
 
       leftFillColors = leftMergeArray.map((_, i) => {
-        if (i == leftMergeIndex) return 'red';
-        return 'white';
+        if (i == leftMergeIndex) return 'var(--tertiary)';
+        return 'transparent';
       });
 
       rightFillColors = rightMergeArray.map((_, i) => {
-        if (i == rightMergeIndex) return 'red';
-        return 'white';
+        if (i == rightMergeIndex) return 'var(--tertiary)';
+        return 'transparent';
       });
     } else {
       leftMergeArray = [];
@@ -121,38 +121,52 @@
   }
 </script>
 
-<h1>Mergesort</h1>
-<p>Mergesort is a recursive sorting algorithm that bla bla bla</p>
+<div class="content-container">
+  <h1>Mergesort</h1>
+  <p>
+    Mergesort is a recursive algorithm that sorts an array by splitting its input into two smaller arrays and sorting those.
+    The sorted arrays are then merged back together. The base case is an array of size 1, which is already sorted.
+  </p>
 
-Array length:
-<input type='number' min='1' max='10' step='1' bind:value={arrayLength} />
-<input type='range' min='1' max='10' step='1' bind:value={arrayLength} />
-<br />
-Array values:
-{#each {length: arrayLength} as _, i}
-  <input type='number' min='0' max='100' step='1' bind:value={slicedArray[i]} />
-{/each}
-<br />
-Current step: {endStep}
-<button type='button' on:click={() => endStep = Math.min(endStep + 1, arrayLength * 10)}>Step</button>
-<button type='button' on:click={() => endStep = 0}>Reset</button>
+  <div>
+    Array length:
+    <input type='number' min='1' max='10' step='1' bind:value={arrayLength} />
+    <input type='range' min='1' max='10' step='1' bind:value={arrayLength} />
+  </div>
 
-<AlkoArray
-  values={sortedArray}
-  fillColors={finalFillColors}
-  textColors={[]}
-/>
-<AlkoArray
-  values={leftMergeArray}
-  fillColors={leftFillColors}
-  textColors={[]}
-/>
-<AlkoArray
-  values={rightMergeArray}
-  fillColors={rightFillColors}
-  textColors={[]}
-/>
+  <div>
+    Array values:
+    {#each {length: arrayLength} as _, i}
+      <input type='number' min='0' max='100' step='1' bind:value={slicedArray[i]} />
+    {/each}
+  </div>
+
+  <div>
+    Current step: {endStep}
+    <button type='button' on:click={() => endStep = Math.min(endStep + 1, arrayLength * 10)}>Step</button>
+    <button type='button' on:click={() => endStep = 0}>Reset</button>
+  </div>
+
+  <AlkoArray
+    values={sortedArray}
+    fillColors={finalFillColors}
+  />
+
+  {#if merging}
+    <p>Merging:</p>
+    <AlkoArray
+      values={leftMergeArray}
+      fillColors={leftFillColors}
+    />
+    <AlkoArray
+      values={rightMergeArray}
+      fillColors={rightFillColors}
+    />
+  {/if}
+</div>
 
 <style lang="scss">
+  @import '$lib/styles/variables.scss';
+
   
 </style>
