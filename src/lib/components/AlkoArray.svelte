@@ -9,7 +9,7 @@
 
   function handleInput(e: Event, editedIndex: number) {
     let newValue = (e.target as HTMLElement)!.textContent ? parseFloat((e.target as HTMLElement).textContent!) : undefined;
-    if (!newValue || typeof newValue !== 'number' || isNaN(newValue)) return;
+    if (!newValue || typeof newValue !== 'number' || isNaN(newValue) || -99 > newValue || 99 < newValue) return;
     values[editedIndex] = newValue;
   }
 </script>
@@ -25,7 +25,11 @@
         contenteditable={editable}
         on:input={e => handleInput(e, i)}
         transition:fade={{duration: 300}}>
-        {value}
+        <div
+          style:width='min-content'
+          style:border-bottom={editable ? '1px dotted var(--text-primary)' : 'none'}>
+          {value}
+        </div>
       </div>
     {/each}
   </div>
@@ -51,7 +55,8 @@
       border: 3px solid var(--primary);
 
       .cell {
-        text-align: center;
+        display: flex;
+        justify-content: center;
         padding: 1rem 0;
         width: 3rem;
         border: 0;
