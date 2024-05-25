@@ -202,7 +202,11 @@
   <h2 id='overview'>Overview</h2>
   <p>
     Mergesort is a recursive algorithm that sorts an array by splitting its input into two smaller arrays and sorting those.
-    The sorted arrays are then merged back together. The base case is an array of size 1, which is already sorted.
+    The base case is an array of size 1, which is already sorted.
+  </p>
+  <p>
+    The two subarrays (which are already sorted) are then merged.
+    This can be done in linear time by iterating over each array and selecting the smaller element each time.
   </p>
   
   
@@ -279,6 +283,15 @@
         <Line>\(k \gets k + 1\)</Line>
       <Return breakCount={1} spotlight={breakpoint == 9}>\(A\)</Return>
   </Algorithm>
+
+  <h2 id='complexity'>Time Complexity</h2>
+  <p>
+    The time complexity of merge sort is \(T_n = T_{'{'}\frac{'{'}n{'}'}{'{'}2{'}'}{'}'} + n\) as at each iteration,
+    we divide the problem into two subproblems of half the size and merge them in linear time.
+  </p>
+  <p>
+    Therefore the time complexity is \(O(n \log n)\) by the master theorem.
+  </p>
 </div>
 
 <style lang="scss">
