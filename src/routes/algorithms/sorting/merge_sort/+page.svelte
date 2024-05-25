@@ -1,5 +1,4 @@
 <script lang='ts'>
-  import katex from 'katex';
   import AlkoArray from '$lib/components/AlkoArray.svelte';
   import Algorithm from '$lib/components/pseudocode/Algorithm.svelte';
   import Line from '$lib/components/pseudocode/Line.svelte';
@@ -10,6 +9,7 @@
   import While from '$lib/components/pseudocode/While.svelte';
   import Else from '$lib/components/pseudocode/Else.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
+  import { k } from '$lib/KatexMacro';
 
   let arrayLength = 5;
 
@@ -206,8 +206,8 @@
   <h1 id='merge_sort'>Merge sort</h1>
   <h2 id='overview'>Overview</h2>
   <p>
-    Mergesort is a recursive algorithm that splits an input of \(n\) elements into \(n\) subarrays
-    (each considered to be sorted as they have only 1 element)
+    Mergesort is a recursive algorithm that splits an input of {@html k('n')} elements into {@html k('n')} subarrays
+    (each considered to be sorted as they have only {@html k('1')} element)
     then repeatedly merges them.
   </p>
   <p>
@@ -226,7 +226,7 @@
   </div>
   
   <div class='input-size'>
-    Input size {@html katex.renderToString('n=' + arrayLength)}:
+    Input size {@html k('n=' + arrayLength)}:
     <input type='range' min='1' max='10' step='1' bind:value={arrayLength} />
   </div>
   
@@ -235,7 +235,7 @@
       values={sortedArray}
       fillColors={finalFillColors}
       textColors={finalTextColors}
-      subtitle='\(A\)'
+      subtitle={k('A')}
     />
   </div>
   
@@ -244,13 +244,13 @@
       values={leftMergeArray}
       fillColors={leftFillColors}
       textColors={leftTextColors}
-      subtitle='\(L\)'
+      subtitle={k('L')}
     />
     <AlkoArray
       values={rightMergeArray}
       fillColors={rightFillColors}
       textColors={rightTextColors}
-      subtitle='\(R\)'
+      subtitle={k('R')}
     />
   </div>
   
@@ -259,43 +259,43 @@
   <h2 id='pseudocode'>Pseudocode</h2>
   <Algorithm name='Merge Sort'>
     <Procedure args={['A']}>MergeSort</Procedure>
-      <If>\(|A| = 1\)</If>
-        <Return spotlight={breakpoint == 1}>\(A\)</Return>
-      <Line breakCount={1}>\(m \gets \left\lfloor\frac{'{'}|A|{'}'}{2}\right\rfloor\)</Line>
-      <Line spotlight={breakpoint == 2}>\(L \gets\) <span class='call'>MergeSort</span>\((A[...m])\)</Line>
-      <Line spotlight={breakpoint == 3}>\(R \gets\) <span class='call'>MergeSort</span>\((A[m+1...])\)</Line>
-      <Return><span class='call'>Merge</span>\((L, R)\)</Return>
+      <If>{@html k('|A| = 1')}</If>
+        <Return spotlight={breakpoint == 1}>{@html k('A')}</Return>
+      <Line breakCount={1}>{@html k('m\\gets\\left\\lfloor\\frac{|A|}{2}\\right\\rfloor')}</Line>
+      <Line spotlight={breakpoint == 2}>{@html k('L \\gets')} <span class='call'>MergeSort</span>{@html k('(A[...m])')}</Line>
+      <Line spotlight={breakpoint == 3}>{@html k('R \\gets')} <span class='call'>MergeSort</span>{@html k('(A[m+1...])')}</Line>
+      <Return><span class='call'>Merge</span>{@html k('(L, R)')}</Return>
     <Empty />
     <Procedure breakCount={1} spotlight={breakpoint == 4} args={['L', 'R']}>Merge</Procedure>
-      <Line>\(i \gets 0\)</Line>
-      <Line>\(j \gets 0\)</Line>
-      <Line>\(k \gets 0\)</Line>
-      <While>\(i {'<'} |L|\) <b>and</b> \(j {'<'} |R|\)</While>
-        <If spotlight={breakpoint == 5}>\(l[i] {'<'} r[j]\)</If>
-          <Line>\(A[k] \gets L[i]\)</Line>
-          <Line>\(i \gets i + 1\)</Line>
+      <Line>{@html k('i \\gets 0')}</Line>
+      <Line>{@html k('j \\gets 0')}</Line>
+      <Line>{@html k('k \\gets 0')}</Line>
+      <While>{@html k('i < |L|')} <b>and</b> {@html k('j < |R|')}</While>
+        <If spotlight={breakpoint == 5}>{@html k('l[i] < r[j]')}</If>
+          <Line>{@html k('A[k] \\gets L[i]')}</Line>
+          <Line>{@html k('i \\gets i + 1')}</Line>
         <Else spotlight={breakpoint == 6} />
-          <Line>\(A[k] \gets R[j]\)</Line>
-          <Line>\(j \gets j + 1\)</Line>
-        <Line breakCount={1}>\(k \gets k + 1\)</Line>
-      <While breakCount={1} spotlight={breakpoint == 7}>\(i {'<'} |L|\)</While>
-        <Line>\(A[k] \gets L[i]\)</Line>
-        <Line>\(i \gets i + 1\)</Line>
-        <Line>\(k \gets k + 1\)</Line>
-      <While breakCount={1} spotlight={breakpoint == 8}>\(j {'<'} |R|\)</While>
-        <Line>\(A[k] \gets R[j]\)</Line>
-        <Line>\(j \gets j + 1\)</Line>
-        <Line>\(k \gets k + 1\)</Line>
-      <Return breakCount={1} spotlight={breakpoint == 9}>\(A\)</Return>
+          <Line>{@html k('A[k] \\gets R[j]')}</Line>
+          <Line>{@html k('j \\gets j + 1')}</Line>
+        <Line breakCount={1}>{@html k('k \\gets k + 1')}</Line>
+      <While breakCount={1} spotlight={breakpoint == 7}>{@html k('i < |L|')}</While>
+        <Line>{@html k('A[k] \\gets L[i]')}</Line>
+        <Line>{@html k('i \\gets i + 1')}</Line>
+        <Line>{@html k('k \\gets k + 1')}</Line>
+      <While breakCount={1} spotlight={breakpoint == 8}>{@html k('j < |R|')}</While>
+        <Line>{@html k('A[k] \\gets R[j]')}</Line>
+        <Line>{@html k('j \\gets j + 1')}</Line>
+        <Line>{@html k('k \\gets k + 1')}</Line>
+      <Return breakCount={1} spotlight={breakpoint == 9}>{@html k('A')}</Return>
   </Algorithm>
 
   <h2 id='complexity'>Time Complexity</h2>
   <p>
-    The time complexity of merge sort is \(T_n = T_{'{'}\frac{'{'}n{'}'}{'{'}2{'}'}{'}'} + n\) as at each iteration,
+    The time complexity of merge sort is {@html k('T_n = T_{\\frac{n}{2}} + n')} as at each iteration,
     we divide the problem into two subproblems of half the size and merge them in linear time.
   </p>
   <p>
-    Therefore the time complexity is \(O(n \log n)\) by the master theorem.
+    Therefore the time complexity is {@html k('O(n \\log n)')} by the master theorem.
   </p>
 </div>
 

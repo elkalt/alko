@@ -9,7 +9,7 @@
 
   function handleInput(e: Event, editedIndex: number) {
     let newValue = (e.target as HTMLElement)!.textContent ? parseFloat((e.target as HTMLElement).textContent!) : undefined;
-    if (!newValue || typeof newValue !== 'number' || isNaN(newValue) || -99 > newValue || 99 < newValue) return;
+    if (!newValue || typeof newValue !== 'number' || isNaN(newValue)) return;
     values[editedIndex] = newValue;
   }
 </script>
@@ -34,7 +34,7 @@
     {/each}
   </div>
   {#if subtitle}
-    {subtitle}
+    {@html subtitle}
   {/if}
 </div>
 
