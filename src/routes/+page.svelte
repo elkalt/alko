@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang='ts'>
   const { url } = import.meta;
   const modules = import.meta.glob('./**/*.svelte'); // Include subfolder
 
@@ -36,8 +36,8 @@
   <ul>
     {#each getPages(topic.toLowerCase()) as path}
       <!-- truncate path, capitalize first letter, replace _ with space -->
-      {@const i = path.lastIndexOf("/") + 1}
-      <li><a href={path}>{(path.charAt(i).toLocaleUpperCase() + path.slice(i + 1)).replaceAll("_", " ")}</a></li>
+      {@const i = path.lastIndexOf('/') + 1}
+      <li><a href={path}>{(path.charAt(i).toLocaleUpperCase() + path.slice(i + 1)).replaceAll('_', ' ')}</a></li>
     {/each}
   </ul>
 {/each}

@@ -1,19 +1,18 @@
-<script lang="ts">
+<script lang='ts'>
   export let values: number[];
   export let fillColors: string[];
+  export let textColors: string[] = Array(values.length).fill('var(--text-primary)');
 </script>
 
-<div class="array">
+<div class='array'>
   {#each values as value, i}
-    <div class="cell" style="background-color: {fillColors[i]};">
+    <div class='cell' style:background-color={fillColors[i]} style:color={textColors[i]}>
       {value}
     </div>
   {/each}
 </div>
 
-<style>
-  @import 'styles/variables.scss';
-
+<style lang='scss'>
   .array {
     display: flex;
     justify-content: center;
