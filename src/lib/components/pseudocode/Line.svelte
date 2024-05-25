@@ -24,7 +24,7 @@
 </div>
 <div
   class='line'
-  style:margin-left={(0.75 + level * 1.3) + "rem"}
+  style:padding-left={(0.75 + level * 1.3) + "rem"}
   style:background-color={spotlight ? 'var(--quaternary)' : ''}>
   <slot />
 </div>

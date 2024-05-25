@@ -63,6 +63,7 @@
         border: none;
         background: none;
         color: var(--text-primary);
+        cursor: pointer;
       }
 
       .material-symbols-outlined {
