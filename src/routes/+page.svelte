@@ -13,7 +13,7 @@
       .replace(/\/([^/])*.svelte.*/, '/');
   
     const pageRegex = /\/\+page\.svelte$/;
-    const topicRegex = new RegExp(`\\/algorithms\\/${topic}\\/.+\\/\\+page\\.svelte$`);
+    const topicRegex = new RegExp(`sorting\\/.+\\/\\+page\\.svelte$`);
 
     const paths = Object.keys(modules)
       // Convert relative path to absolute path
@@ -26,8 +26,6 @@
       .map((path) => path.replace(pageRegex, ''))
       // Set empty path string to '/' ('./index.svelte' is converted to '')
       .map((path) => path || '/')
-      // Remove everything before /algorithms (due to Vercel deployment)
-      .map((path) => path.replace(/.*\/algorithms/, '/algorithms'))   
       .sort();
     return paths;
   }
