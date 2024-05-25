@@ -197,6 +197,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>Merge Sort</title>
+  <meta name='description' content='Merge sort algorithm visualization and explanation' />
+</svelte:head>
+
 <div class='content'>
   <h1 id='merge_sort'>Merge sort</h1>
   <h2 id='overview'>Overview</h2>

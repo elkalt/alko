@@ -33,6 +33,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>Alko</title>
+  <meta name='description' content='Algorithm visualizations and explanations' />
+</svelte:head>
+
 <div class='parent-container'>
   {#each topics as topic}
     <h1>{topic}</h1>
