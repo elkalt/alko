@@ -1,4 +1,5 @@
 <script lang='ts'>
+  import katex from 'katex';
   import AlkoArray from '$lib/components/AlkoArray.svelte';
   import Algorithm from '$lib/components/pseudocode/Algorithm.svelte';
   import Line from '$lib/components/pseudocode/Line.svelte';
@@ -7,8 +8,8 @@
   import Return from '$lib/components/pseudocode/Return.svelte';
   import Empty from '$lib/components/pseudocode/Empty.svelte';
   import While from '$lib/components/pseudocode/While.svelte';
-  import ElseIf from '$lib/components/pseudocode/ElseIf.svelte';
-    import { onMount } from 'svelte';
+  import Else from '$lib/components/pseudocode/ElseIf.svelte';
+    import Stepper from '$lib/components/Stepper.svelte';
 
   let arrayLength = 5;
 
@@ -30,7 +31,10 @@
       endStep = 0;
     }
   }
-  $: if (endStep != curStep) mergeSortInit();
+  $: {
+    if (endStep != curStep) mergeSortInit();
+    if (endStep == maxStep) breakpoint = -1;
+  };
 
   let currentArrayLeftIndex: number = 0;
   let currentArrayRightIndex: number = arrayLength - 1;
@@ -49,7 +53,7 @@
   let rightTextColors: string[];
   $: {
     finalFillColors = slicedArray.map((_, i) => {
-      if (i < currentArrayLeftIndex || i > currentArrayRightIndex) return 'var(--background-secondary)';
+      if (i < currentArrayLeftIndex || i > currentArrayRightIndex) return 'var(--background-tertiary)';
       return 'transparent';
     });
 
@@ -193,39 +197,39 @@
   }
 </script>
 
-<div class='content-container'>
-  <h1>Mergesort</h1>
+<div class='content'>
+  <h1 id='merge_sort'>Merge sort</h1>
+  <h2 id='overview'>Overview</h2>
   <p>
     Mergesort is a recursive algorithm that sorts an array by splitting its input into two smaller arrays and sorting those.
     The sorted arrays are then merged back together. The base case is an array of size 1, which is already sorted.
   </p>
-
+  
+  
+  <h2 id='visualization'>Visualization</h2>
   <div>
-    Array length:
-    <input type='number' min='1' max='10' step='1' bind:value={arrayLength} />
+    <div class='center'>
+      <AlkoArray
+        bind:values={slicedArray}
+        editable={true}
+        subtitle='Input'/>
+    </div>
+  </div>
+  
+  <div class='input-size'>
+    Input size {@html katex.renderToString('n=' + arrayLength)}:
     <input type='range' min='1' max='10' step='1' bind:value={arrayLength} />
   </div>
-
-  <div>
-    Array values:
-    {#each {length: arrayLength} as _, i}
-      <input type='number' min='0' max='100' step='1' bind:value={slicedArray[i]} />
-    {/each}
+  
+  <div class='center'>
+    <AlkoArray
+      values={sortedArray}
+      fillColors={finalFillColors}
+      textColors={finalTextColors}
+      subtitle='\(A\)'
+    />
   </div>
-
-  <div>
-    Current step: {endStep}
-    <button type='button' on:click={() => endStep = Math.min(endStep + 1, maxStep)}>Step</button>
-    <button type='button' on:click={() => endStep = 0}>Reset</button>
-  </div>
-
-  <AlkoArray
-    values={sortedArray}
-    fillColors={finalFillColors}
-    textColors={finalTextColors}
-    subtitle='\(A\)'
-  />
-
+  
   <div class='merge-arrays'>
     <AlkoArray
       values={leftMergeArray}
@@ -240,7 +244,10 @@
       subtitle='\(R\)'
     />
   </div>
+  
+  <Stepper endStep={endStep} maxStep={maxStep} on:step={e => endStep = e.detail} />
 
+  <h2 id='pseudocode'>Pseudocode</h2>
   <Algorithm name='Merge Sort'>
     <Procedure args={['A']}>MergeSort</Procedure>
       <If>\(|A| = 1\)</If>
@@ -258,7 +265,7 @@
         <If spotlight={breakpoint == 5}>\(l[i] {'<'} r[j]\)</If>
           <Line>\(A[k] \gets L[i]\)</Line>
           <Line>\(i \gets i + 1\)</Line>
-        <ElseIf spotlight={breakpoint == 6}>\(l[i] {'>'} r[j]\)</ElseIf>
+        <Else spotlight={breakpoint == 6} />
           <Line>\(A[k] \gets R[j]\)</Line>
           <Line>\(j \gets j + 1\)</Line>
         <Line breakCount={1}>\(k \gets k + 1\)</Line>
@@ -275,10 +282,26 @@
 </div>
 
 <style lang="scss">
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .merge-arrays {
     display: flex;
-    width: fit-content;
-    margin: 0 auto 0 auto;
+    width: 100%;
+    justify-content: center;
+    margin: 0 auto;
     gap: 2rem;
+  }
+
+  .input-size {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--tertiary);
+    margin-bottom: 0.5rem;
   }
 </style>

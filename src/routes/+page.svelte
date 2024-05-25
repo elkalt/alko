@@ -31,13 +31,27 @@
   }
 </script>
 
-{#each topics as topic}
-  <h1>{topic}</h1>
-  <ul>
-    {#each getPages(topic.toLowerCase()) as path}
-      <!-- truncate path, capitalize first letter, replace _ with space -->
-      {@const i = path.lastIndexOf('/') + 1}
-      <li><a href={path}>{(path.charAt(i).toLocaleUpperCase() + path.slice(i + 1)).replaceAll('_', ' ')}</a></li>
-    {/each}
-  </ul>
-{/each}
+<div class='parent-container'>
+  {#each topics as topic}
+    <h1>{topic}</h1>
+    <ul>
+      {#each getPages(topic.toLowerCase()) as path}
+        <!-- truncate path, capitalize first letter, replace _ with space -->
+        {@const i = path.lastIndexOf('/') + 1}
+        <li><a href={path}>{(path.charAt(i).toLocaleUpperCase() + path.slice(i + 1)).replaceAll('_', ' ')}</a></li>
+      {/each}
+    </ul>
+  {/each}
+</div>
+
+<style lang="scss">
+  .parent-container {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
+</style>
