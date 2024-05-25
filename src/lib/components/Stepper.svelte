@@ -10,6 +10,10 @@
     endStep = step;
     dispatch('step', step);
   }
+
+  function rangeHandler(e: Event) {
+    setAndDispatch((e.target as HTMLInputElement).valueAsNumber);
+  }
 </script>
 
 <div class='stepper'>
@@ -38,7 +42,7 @@
       last_page
     </button>
   </div>
-  <input type='range' min='0' max={maxStep} bind:value={endStep} />
+  <input type='range' min='0' max={maxStep} value={endStep} on:input={e => rangeHandler(e)} />
   <div class='center'>Step {endStep}/{maxStep}</div>
 </div>
 
