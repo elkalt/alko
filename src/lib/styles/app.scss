@@ -30,32 +30,83 @@ a {
   }
 }
 
-button {
+// button {
+//   font-family: 'Quattrocento', serif;
+//   font-size: 1.1rem;
+//   border: none;
+//   border-radius: 0.25rem;
+//   cursor: pointer;
+//   background-color: var(--primary);
+//   color: var(--background);
+//   transition: background-color 0.15s;
+
+//   &:hover {
+//     background-color: var(--secondary);
+//   }
+// }
+
+input {
   font-family: 'Quattrocento', serif;
-  font-size: 1.1rem;
-  border: none;
+  font-size: 1rem;
+  border: 2px solid var(--primary);
   border-radius: 0.25rem;
-  cursor: pointer;
-  background-color: var(--primary);
-  color: var(--background);
-  transition: background-color 0.15s;
-
-  &:hover {
-    background-color: var(--secondary);
-  }
-
+  background-color: transparent;
+  color: var(--text-primary);
 }
 
-.content-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background-color: var(--tertiary);
+    border-radius: 0.25rem;
+  }
+  
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0.9rem;
+    height: 0.9rem;
+    cursor: pointer;
+    background-color: var(--primary);
+    border-radius: 50%;
+    margin-top: -6px;
+
+    &:hover {
+      background-color: var(--secondary);
+    }
+  }
 }
 
 .katex {
   font-size: 1.1rem !important;
 }
 
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
 .call {
   font-family: 'Sedan SC', serif;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
