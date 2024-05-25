@@ -22,10 +22,18 @@
 <div class='line-number' style:background-color={spotlight ? 'var(--quaternary)' : ''}>
   {lineNumber}:
 </div>
-<div class='line' style:padding-left={(0.75 + level * 1.3) + "rem"} style:background-color={spotlight ? 'var(--quaternary)' : ''}>
+<div
+  class='line'
+  style:margin-left={(0.75 + level * 1.3) + "rem"}
+  style:background-color={spotlight ? 'var(--quaternary)' : ''}>
   <slot />
 </div>
 
 <style lang='scss'>
-  @import '$lib/styles/pseudocode.scss';
+  .line-number {
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+    align-items: center;
+  }
 </style>
