@@ -72,6 +72,7 @@
     currentArrayRightIndex = arrayLength - 1;
     merging = false;
     sortedArray = slicedArray.slice();
+    breakpoint = -1;
     mergeSort();
   }
 
