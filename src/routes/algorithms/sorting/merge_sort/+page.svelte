@@ -8,12 +8,12 @@
   import Return from '$lib/components/pseudocode/Return.svelte';
   import Empty from '$lib/components/pseudocode/Empty.svelte';
   import While from '$lib/components/pseudocode/While.svelte';
-  import Else from '$lib/components/pseudocode/ElseIf.svelte';
-    import Stepper from '$lib/components/Stepper.svelte';
+  import Else from '$lib/components/pseudocode/Else.svelte';
+  import Stepper from '$lib/components/Stepper.svelte';
 
   let arrayLength = 5;
 
-  let array: number[] = [3, 1, 7, 2, 6, 1, 5, 8, 3, 8];
+  let array: number[] = [10, 5, 7, 9, 2, 4, 3, 1, 8, 6];
   let slicedArray: number[];
   $: slicedArray = array.slice(0, arrayLength);
 
@@ -201,12 +201,12 @@
   <h1 id='merge_sort'>Merge sort</h1>
   <h2 id='overview'>Overview</h2>
   <p>
-    Mergesort is a recursive algorithm that sorts an array by splitting its input into two smaller arrays and sorting those.
-    The base case is an array of size 1, which is already sorted.
+    Mergesort is a recursive algorithm that splits an input of \(n\) elements into \(n\) subarrays
+    (each considered to be sorted as they have only 1 element)
+    then repeatedly merges them.
   </p>
   <p>
-    The two subarrays (which are already sorted) are then merged.
-    This can be done in linear time by iterating over each array and selecting the smaller element each time.
+    Any two sorted arrays can be sorted in linear time by iterating over each array and selecting the smaller element each time.
   </p>
   
   
