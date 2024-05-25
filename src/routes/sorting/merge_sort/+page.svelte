@@ -35,6 +35,8 @@
   let leftFillColors: string[];
   let rightFillColors: string[];
   let breakpoint: number = -1;
+  let leftTextColors: string[];
+  let rightTextColors: string[];
   $: {
     finalFillColors = slicedArray.map((_, i) => {
       if (i < currentArrayLeftIndex || i > currentArrayRightIndex) return 'var(--background-secondary)';
@@ -42,6 +44,8 @@
     });
 
     if (merging) {
+      leftTextColors = [];
+      rightTextColors = [];
       if (insertIndex <= currentArrayRightIndex) {
         finalFillColors[insertIndex] = 'var(--tertiary)';
       }
@@ -61,8 +65,12 @@
       });
     } else {
       finalTextColors = Array(arrayLength).fill('var(--text-primary)');
-      leftMergeArray = [];
-      rightMergeArray = [];
+      leftMergeArray = leftMergeArray ? leftMergeArray.slice(0, 1) : [1];
+      rightMergeArray = rightMergeArray ? rightMergeArray.slice(0, 1) : [1];
+      leftTextColors = ['transparent'];
+      rightTextColors = ['transparent'];
+      leftFillColors = [];
+      rightFillColors = [];
     }
   }
 
@@ -109,6 +117,8 @@
     insertIndex = arrayLength;
     leftMergeArray = sortedArray.slice(currentArrayLeftIndex, middle + 1);
     rightMergeArray = sortedArray.slice(middle + 1, currentArrayRightIndex + 1);
+    leftTextColors = Array(leftMergeArray.length).fill('transparent');
+    rightTextColors = Array(rightMergeArray.length).fill('transparent');
     leftMergeIndex = -1;
     rightMergeIndex = -1;
     if (++curStep >= endStep) {
@@ -203,19 +213,23 @@
     values={sortedArray}
     fillColors={finalFillColors}
     textColors={finalTextColors}
+    subtitle='\(A\)'
   />
 
-  {#if merging}
-    <p>Merging:</p>
+  <div class='merge-arrays'>
     <AlkoArray
       values={leftMergeArray}
       fillColors={leftFillColors}
+      textColors={leftTextColors}
+      subtitle='\(L\)'
     />
     <AlkoArray
       values={rightMergeArray}
       fillColors={rightFillColors}
+      textColors={rightTextColors}
+      subtitle='\(R\)'
     />
-  {/if}
+  </div>
 
   <Algorithm name='Merge Sort'>
     <Procedure args={['A']}>MergeSort</Procedure>
@@ -232,20 +246,29 @@
       <Line>\(k \gets 0\)</Line>
       <While>\(i {'<'} |L|\) <b>and</b> \(j {'<'} |R|\)</While>
         <If spotlight={breakpoint == 5}>\(l[i] {'<'} r[j]\)</If>
-          <Line>\(M[k] \gets L[i]\)</Line>
+          <Line>\(A[k] \gets L[i]\)</Line>
           <Line>\(i \gets i + 1\)</Line>
         <ElseIf spotlight={breakpoint == 6}>\(l[i] {'>'} r[j]\)</ElseIf>
-          <Line>\(M[k] \gets R[j]\)</Line>
+          <Line>\(A[k] \gets R[j]\)</Line>
           <Line>\(j \gets j + 1\)</Line>
         <Line breakCount={1}>\(k \gets k + 1\)</Line>
       <While breakCount={1} spotlight={breakpoint == 7}>\(i {'<'} |L|\)</While>
-        <Line>\(M[k] \gets L[i]\)</Line>
+        <Line>\(A[k] \gets L[i]\)</Line>
         <Line>\(i \gets i + 1\)</Line>
         <Line>\(k \gets k + 1\)</Line>
       <While breakCount={1} spotlight={breakpoint == 8}>\(j {'<'} |R|\)</While>
-        <Line>\(M[k] \gets R[j]\)</Line>
+        <Line>\(A[k] \gets R[j]\)</Line>
         <Line>\(j \gets j + 1\)</Line>
         <Line>\(k \gets k + 1\)</Line>
-      <Return breakCount={1} spotlight={breakpoint == 9}>\(M\)</Return>
+      <Return breakCount={1} spotlight={breakpoint == 9}>\(A\)</Return>
   </Algorithm>
 </div>
+
+<style lang="scss">
+  .merge-arrays {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto 0 auto;
+    gap: 2rem;
+  }
+</style>
