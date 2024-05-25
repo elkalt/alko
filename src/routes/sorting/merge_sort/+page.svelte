@@ -8,6 +8,7 @@
   import Empty from '$lib/components/pseudocode/Empty.svelte';
   import While from '$lib/components/pseudocode/While.svelte';
   import ElseIf from '$lib/components/pseudocode/ElseIf.svelte';
+    import { onMount } from 'svelte';
 
   let arrayLength = 5;
 
@@ -20,6 +21,15 @@
 
   let endStep = 0;
   let curStep = 0;
+  let maxStep = 0;
+  $: {
+    if (slicedArray) {
+      endStep = 200;
+      mergeSortInit();
+      maxStep = curStep;
+      endStep = 0;
+    }
+  }
   $: if (endStep != curStep) mergeSortInit();
 
   let currentArrayLeftIndex: number = 0;
@@ -126,7 +136,7 @@
       return
     };
     merge();
-    if (curStep >= endStep) return;
+    return;
   }
 
   function merge() {
@@ -205,7 +215,7 @@
 
   <div>
     Current step: {endStep}
-    <button type='button' on:click={() => endStep = Math.min(endStep + 1, arrayLength * 10)}>Step</button>
+    <button type='button' on:click={() => endStep = Math.min(endStep + 1, maxStep)}>Step</button>
     <button type='button' on:click={() => endStep = 0}>Reset</button>
   </div>
 
