@@ -68,9 +68,17 @@
     {/each}
   {/if}
 </div>
-<slot />
+<div class='content'>
+  <slot />
+</div>
 
 <style lang="scss">
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .heading-container {
     display: flex;
     flex-direction: column;

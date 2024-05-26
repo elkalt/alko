@@ -13,7 +13,7 @@
   <header>
     <b>Algorithm{number ? ' ' + number : ''}</b> {name}
   </header>
-  <div class='content'>
+  <div class='full-content'>
     <slot />
   </div>
 </div>
@@ -29,7 +29,7 @@
     }
   }
 
-  .content {
+  .full-content {
     display: grid;
     grid-template-columns: min-content 1fr;
   }

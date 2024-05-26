@@ -60,5 +60,13 @@
     @media screen and (max-width: 768px) {
       width: 100%;
     }
+
+    ul {
+      margin: 0;
+
+      li {
+        padding-top: 0.5rem;
+      }
+    }
   }
 </style>
