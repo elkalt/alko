@@ -54,12 +54,17 @@
   {#if !isMobile}
     {#each headings as heading}
       {@const level = parseInt(heading.tagName.charAt(1))}
-      <a
-        href={`#${heading.id}`}
-        style:margin-left={level - 0.5 + 'rem'}
-        style:border-left={level == 1 ? 'none' : '1px solid var(--tertiary)'}>
-        {heading.textContent} 
-      </a>
+      <div
+        class='line'
+        style:grid-template-columns={'min-content '.repeat(level - 1) + '1fr'}>
+        {#each Array.from({ length: level - 1 }) as _, i}
+          <span class='tab' />
+        {/each}
+        <a
+          href={`#${heading.id}`}>
+          {heading.textContent} 
+        </a>
+      </div>
     {/each}
   {/if}
 </div>
@@ -72,8 +77,18 @@
     position: fixed;
     left: 2rem;
 
-    a {
-      padding: 0.5rem 0 0.5rem 0.5rem;
+    .line {
+      display: grid;
+
+      .tab {
+        display: inline-block;
+        width: 1rem;
+        border-left: 1px solid var(--tertiary);
+      }
+
+      a {
+        padding: 0.5rem 0;
+      }
     }
   }
 </style>

@@ -24,9 +24,14 @@
 </div>
 <div
   class='line'
-  style:padding-left={(0.75 + level * 1.3) + "rem"}
-  style:background-color={spotlight ? 'var(--quaternary)' : ''}>
-  <slot />
+  style:background-color={spotlight ? 'var(--quaternary)' : ''}
+  style:grid-template-columns={'min-content '.repeat(level) + '1fr'}>
+  {#each Array.from({ length: level }) as _, i}
+    <span class='tab' />
+  {/each}
+  <span>
+    <slot />
+  </span>
 </div>
 
 <style lang='scss'>
@@ -35,5 +40,16 @@
     justify-content: flex-end;
     height: 100%;
     align-items: center;
+  }
+
+  .line {
+    display: grid;
+    padding-left: 0.75rem;
+
+    .tab {
+      display: inline-block;
+      width: 1.3rem;
+      border-left: 1px solid var(--background-tertiary);
+    }
   }
 </style>

@@ -10,6 +10,6 @@ import { k } from '$lib/KatexMacro';
 <Line breakCount={breakCount} nester={true} spotlight={spotlight}>
   <div>
     <b>procedure </b>
-    <span class='call'><slot /></span>\(({#each args as arg, i}{@html k(arg)}{i < args.length - 1 ? ', ' : ''}{/each})\)
+    <span class='call'><slot /></span>{@html k('(' + args.join(', ') + ')' )}
   </div>
 </Line>
