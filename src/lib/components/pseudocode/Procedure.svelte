@@ -1,5 +1,6 @@
 <script lang='ts'>
-import { k } from '$lib/KatexMacro';
+  import { k } from '$lib/KatexMacro';
+  import Call from './Call.svelte';
   import Line from './Line.svelte';
 
   export let args: string[] = [];
@@ -10,6 +11,6 @@ import { k } from '$lib/KatexMacro';
 <Line breakCount={breakCount} nester={true} spotlight={spotlight}>
   <div>
     <b>procedure </b>
-    <span class='call'><slot /></span>{@html k('(' + args.join(', ') + ')' )}
+    <Call><slot /></Call>{@html k('(' + args.join(', ') + ')' )}
   </div>
 </Line>

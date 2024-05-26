@@ -8,6 +8,7 @@
   import Empty from '$lib/components/pseudocode/Empty.svelte';
   import While from '$lib/components/pseudocode/While.svelte';
   import Else from '$lib/components/pseudocode/Else.svelte';
+  import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
   import { k } from '$lib/KatexMacro';
 
@@ -261,14 +262,12 @@
     <If>{@html k('|A| = 1')}</If>
       <Return spotlight={breakpoint == 1}>{@html k('A')}</Return>
     <Line breakCount={1}>{@html k('m\\gets\\left\\lfloor\\frac{|A|}{2}\\right\\rfloor')}</Line>
-    <Line spotlight={breakpoint == 2}>{@html k('L \\gets')} <span class='call'>MergeSort</span>{@html k('(A[...m])')}</Line>
-    <Line spotlight={breakpoint == 3}>{@html k('R \\gets')} <span class='call'>MergeSort</span>{@html k('(A[m+1...])')}</Line>
-    <Return><span class='call'>Merge</span>{@html k('(L, R)')}</Return>
+    <Line spotlight={breakpoint == 2}>{@html k('L \\gets')} <Call>MergeSort</Call>{@html k('(A[...m])')}</Line>
+    <Line spotlight={breakpoint == 3}>{@html k('R \\gets')} <Call>MergeSort</Call>{@html k('(A[m+1...])')}</Line>
+    <Return><Call>Merge</Call>{@html k('(L, R)')}</Return>
   <Empty />
   <Procedure breakCount={1} spotlight={breakpoint == 4} args={['L', 'R']}>Merge</Procedure>
-    <Line>{@html k('i \\gets 0')}</Line>
-    <Line>{@html k('j \\gets 0')}</Line>
-    <Line>{@html k('k \\gets 0')}</Line>
+    <Line>{@html k('i, j, k \\gets 0')}</Line>
     <While>{@html k('i < |L|')} <b>and</b> {@html k('j < |R|')}</While>
       <If>{@html k('l[i] < r[j]')}</If>
         <Line spotlight={breakpoint == 5}>{@html k('A[k] \\gets L[i]')}</Line>

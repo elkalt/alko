@@ -4,8 +4,9 @@
   import Line from '$lib/components/pseudocode/Line.svelte';
   import Procedure from '$lib/components/pseudocode/Procedure.svelte';
   import While from '$lib/components/pseudocode/While.svelte';
-  import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
+  import If from '$lib/components/pseudocode/If.svelte';
+  import Call from '$lib/components/pseudocode/Call.svelte';
   import { k } from '$lib/KatexMacro';
 
   let arrayLength = 5;
@@ -15,76 +16,87 @@
   $: slicedArray = array.slice(0, arrayLength);
 
   let sortedArray: number[];
-  $: if (slicedArray) insertionSortInit();
+  $: if (slicedArray) selectionSortInit();
 
   let endStep = 0;
   let curStep = 0;
   let maxStep = 0;
   $: {
     if (slicedArray) {
-      endStep = 60;
-      insertionSortInit();
+      endStep = 100;
+      selectionSortInit();
       maxStep = curStep;
       endStep = 0;
     }
   }
-  $: if (endStep != curStep) insertionSortInit();
+  $: if (endStep != curStep) selectionSortInit();
 
   let fillColors: string[];
   let textColors: string[];
   let breakpoint: number = -1;
   let sortedBound: number = -1;
-  let currentInsert: number = -1;
+  let smallest: number = -1;
+  let check: number = -1;
   $: {
     fillColors = slicedArray.map((_, i) => {
-      if (i > sortedBound) return 'var(--background-tertiary)';
-      if (i == currentInsert) return 'var(--tertiary)';
+      if (i < sortedBound) return 'var(--background-tertiary)';
+      if (i == smallest) return 'var(--tertiary)';
+      if (i == check) return 'var(--quaternary)';
       return 'transparent';
     });
   }
 
-  function insertionSortInit() {
+  function selectionSortInit() {
     curStep = 0;
     sortedArray = slicedArray.slice();
     breakpoint = -1;
-    sortedBound = 10;
-    currentInsert = -1;
-    insertionSort();
+    sortedBound = -1;
+    smallest = -1;
+    check = -1;
+    selectionSort();
   }
 
-  function insertionSort() {
+  function selectionSort() {
     if (curStep >= endStep) return;
     for (sortedBound = 0; sortedBound < sortedArray.length; sortedBound++) {
-      currentInsert = sortedBound;
+      smallest = sortedBound;
       if (++curStep >= endStep) {
         breakpoint = 0;
         return;
       };
-      while (currentInsert >= 0 && sortedArray[currentInsert - 1] > sortedArray[currentInsert]) {
-        let temp = sortedArray[currentInsert];
-        sortedArray[currentInsert] = sortedArray[currentInsert - 1];
-        sortedArray[currentInsert - 1] = temp;
-        currentInsert--;
+      for (check = sortedBound + 1; check < sortedArray.length; check++) {
         if (++curStep >= endStep) {
           breakpoint = 1;
           return;
         };
+        if (sortedArray[check] < sortedArray[smallest]) {
+          smallest = check;
+          if (++curStep >= endStep) {
+            breakpoint = 1;
+            return;
+          };
+        }
       }
+      let temp = sortedArray[smallest];
+      sortedArray[smallest] = sortedArray[sortedBound];
+      sortedArray[sortedBound] = temp;
     }
+    sortedBound = -1;
+    smallest = -1;
+    check = -1;
     curStep++;
-    currentInsert = -1;
     return;
   }
 </script>
 
 <svelte:head>
-  <title>Insertion Sort</title>
-  <meta name='description' content='Insertion sort algorithm visualization and explanation' />
+  <title>Selection Sort</title>
+  <meta name='description' content='Selection sort algorithm visualization and explanation' />
 </svelte:head>
 
-<h1 id='insertion_sort'>Insertion sort</h1>
+<h1 id='selection_sort'>Selection sort</h1>
 <h2 id='overview'>Overview</h2>
-Insertion sort is a simple sorting algorithm that iterates over all items in the list, moving it such that it is in the correct position relative to the items before it.
+Selection sort is a simple sorting algorithm that finds the smallest element in the unsorted part of the list and swaps it with the first unsorted element.
 <h2 id='visualization'>Visualization</h2>
 <div>
   <div class='center'>
@@ -112,18 +124,21 @@ Insertion sort is a simple sorting algorithm that iterates over all items in the
 <Stepper endStep={endStep} maxStep={maxStep} on:step={e => endStep = e.detail} />
 
 <h2 id='pseudocode'>Pseudocode</h2>
-<Algorithm name='Insertion Sort'>
-  <Procedure args={['A']}>InsertionSort</Procedure>
+<Algorithm name='Selection Sort'>
+  <Procedure args={['A']}>SelectionSort</Procedure>
     <Line>{@html k('i \\gets 0')}</Line>
     <While>{@html k('i \\lt |A|')}</While>
-      <Line spotlight={breakpoint == 0}>{@html k('j \\gets i')}</Line>
-      <While>{@html k('j \\ge 0')} <b>and</b> {@html k('A[j-1] \\ge A[j]')}</While>
-        <Line spotlight={breakpoint == 1}><Call>Swap</Call>{@html k('(A[j-1], A[j])')}</Line>
-      <Line breakCount={1}>{@html k('i \\gets i + 1')}</Line>
+      <Line>{@html k('j, k \\gets i')}</Line>
+      <While>{@html k('j \\lt |A|')}</While>
+        <If>{@html k('A[j] < A[k]')}</If>
+          <Line>{@html k('k \\gets j')}</Line>
+        <Line breakCount={1}>{@html k('j \\gets j + 1')}</Line>
+      <Line breakCount={1}><Call>Swap</Call>{@html k('(A[i], A[k])')}</Line>
 </Algorithm>
 
 <h2 id='complexity'>Time Complexity</h2>
 <p>
-  The worst case for insertion sort is an array that is sorted in reverse order (ie. {@html k('[3, 2, 1]')}).
-  In this case, the algorithm will have to make {@html k('1 + 2 + \\ldots + n-1 = \\frac{n(n-1)}{2} = O(n^2)')} comparisons and swaps.
+  Selection sort has the same time complexity regardless of the input.
+  It takes {@html k('(n-1) + (n-2) + \\ldots + 1 = \\frac{(n-1) + 1}{2}')} comparisons to find the smallest element and {@html k('n - 1')} swaps,
+  resulting in a time complexity of {@html k('\\frac{(n-1) + 1}{2}(n-1) = O(n^2)')}.
 </p>
