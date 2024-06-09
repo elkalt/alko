@@ -1,0 +1,144 @@
+<script lang='ts'>
+  import AlkoArray from '$lib/components/AlkoArray.svelte';
+  import Algorithm from '$lib/components/pseudocode/Algorithm.svelte';
+  import Line from '$lib/components/pseudocode/Line.svelte';
+  import Procedure from '$lib/components/pseudocode/Procedure.svelte';
+  import While from '$lib/components/pseudocode/While.svelte';
+  import Stepper from '$lib/components/Stepper.svelte';
+  import If from '$lib/components/pseudocode/If.svelte';
+  import Call from '$lib/components/pseudocode/Call.svelte';
+  import { k } from '$lib/KatexMacro';
+
+  let arrayLength = 5;
+
+  let array: number[] = [9, 5, 7, 10, 2, 4, 3, 1, 8, 6];
+  let slicedArray: number[];
+  $: slicedArray = array.slice(0, arrayLength);
+
+  let sortedArray: number[];
+  $: if (slicedArray) bubbleSortInit();
+
+  let endStep = 0;
+  let curStep = 0;
+  let maxStep = 0;
+  $: {
+    if (slicedArray) {
+      endStep = 100;
+      bubbleSortInit();
+      maxStep = curStep;
+      endStep = 0;
+    }
+  }
+  $: if (endStep != curStep) bubbleSortInit();
+
+  let fillColors: string[];
+  let textColors: string[];
+  let breakpoint: number = -1;
+  let sortedBound: number = -1;
+  let smallest: number = -1;
+  let check: number = -1;
+  $: {
+    fillColors = slicedArray.map((_, i) => {
+      if (i < sortedBound) return 'var(--background-tertiary)';
+      if (i == smallest) return 'var(--tertiary)';
+      if (i == check) return 'var(--quaternary)';
+      return 'transparent';
+    });
+  }
+
+  function bubbleSortInit() {
+    curStep = 0;
+    sortedArray = slicedArray.slice();
+    breakpoint = -1;
+    sortedBound = -1;
+    smallest = -1;
+    check = -1;
+    bubbleSort();
+  }
+
+  function bubbleSort() {
+    if (curStep >= endStep) return;
+    for (sortedBound = 0; sortedBound < sortedArray.length; sortedBound++) {
+      smallest = sortedBound;
+      if (++curStep >= endStep) {
+        breakpoint = 0;
+        return;
+      };
+      for (check = sortedBound + 1; check < sortedArray.length; check++) {
+        if (++curStep >= endStep) {
+          breakpoint = 1;
+          return;
+        };
+        if (sortedArray[check] < sortedArray[smallest]) {
+          smallest = check;
+          if (++curStep >= endStep) {
+            breakpoint = 1;
+            return;
+          };
+        }
+      }
+      let temp = sortedArray[smallest];
+      sortedArray[smallest] = sortedArray[sortedBound];
+      sortedArray[sortedBound] = temp;
+    }
+    sortedBound = -1;
+    smallest = -1;
+    check = -1;
+    curStep++;
+    return;
+  }
+</script>
+
+<svelte:head>
+  <title>Bubble Sort</title>
+  <meta name='description' content='Bubble sort algorithm visualization and explanation' />
+</svelte:head>
+
+<h1 id='bubble_sort'>Bubble sort</h1>
+<h2 id='overview'>Overview</h2>
+Bubble sort is a simple sorting algorithm that finds the smallest element in the unsorted part of the list and swaps it with the first unsorted element.
+<h2 id='visualization'>Visualization</h2>
+<div>
+  <div class='center'>
+    <AlkoArray
+      bind:values={slicedArray}
+      editable={true}
+      subtitle='Input'/>
+  </div>
+</div>
+
+<div class='input-size'>
+  Input size {@html k('n=' + arrayLength)}:
+  <input type='range' min='1' max='10' step='1' bind:value={arrayLength} />
+</div>
+
+<div class='center'>
+  <AlkoArray
+    values={sortedArray}
+    fillColors={fillColors}
+    textColors={textColors}
+    subtitle={k('A')}
+  />
+</div>
+
+<Stepper endStep={endStep} maxStep={maxStep} on:step={e => endStep = e.detail} />
+
+<h2 id='pseudocode'>Pseudocode</h2>
+<Algorithm name='Bubble Sort'>
+  <Procedure args={['A']}>BubbleSort</Procedure>
+    <Line>{@html k('i \\gets 0')}</Line>
+    <While>{@html k('i \\lt |A|')}</While>
+      <Line>{@html k('j, k \\gets i')}</Line>
+      <While>{@html k('j \\lt |A|')}</While>
+        <If>{@html k('A[j] < A[k]')}</If>
+          <Line>{@html k('k \\gets j')}</Line>
+        <Line breakCount={1}>{@html k('j \\gets j + 1')}</Line>
+      <Line breakCount={1}><Call>Swap</Call>{@html k('(A[i], A[k])')}</Line>
+</Algorithm>
+
+<h2 id='complexity'>Time Complexity</h2>
+<p>
+  Bubble sort has the same time complexity regardless of the input.
+  It takes {@html k('(n-1) + (n-2) + \\ldots + 1 = \\frac{(n-1) + 1}{2}')} comparisons to find the smallest element and {@html k('n - 1')} swaps,
+  resulting in a time complexity of {@html k('\\frac{(n-1) + 1}{2}(n-1) = O(n^2)')}.
+</p>
