@@ -7,31 +7,50 @@
   export let subtitle: string = '';
   export let editable: boolean = false;
 
+  let dispValues: number[];
+  $: dispValues = values.slice();
+
   function handleInput(e: Event, editedIndex: number) {
-    let newValue = (e.target as HTMLElement)!.textContent ? parseFloat((e.target as HTMLElement).textContent!) : undefined;
-    if (!newValue || typeof newValue !== 'number' || isNaN(newValue)) return;
-    values[editedIndex] = newValue;
+    console.log(e)
+    let target = (e.target as HTMLElement).firstChild as HTMLElement;
+    let newValue = target.innerText;
+    if (isNaN(Number(newValue))) {
+      target.innerText = dispValues[editedIndex].toString();
+      target.style.borderBottom = '1px dotted var(--text-primary)';
+    } else {
+      values[editedIndex] = Number(newValue);
+    }
+  }
+
+  function handleUnfocus(e: Event, editedIndex: number) {
+    let newValue = (e.target as HTMLElement)!.innerText;
+    if (newValue === '') {
+      (e.target as HTMLElement)!.innerText = values[editedIndex].toString();
+    }
   }
 </script>
 
 <div class='container'>
   <div class='array'>
-    {#each values as value, i}
-      <div
-        class='cell'
-        style:background-color={fillColors[i]}
-        style:color={textColors[i]}
-        style:border-left={i == 0 ? 'none' : '2px solid var(--primary)'}
-        contenteditable={editable}
-        on:input={e => handleInput(e, i)}
-        transition:fade={{duration: 300}}>
+    {#if dispValues}
+      {#each dispValues as value, i}
         <div
-          style:width='min-content'
-          style:border-bottom={editable ? '1px dotted var(--text-primary)' : 'none'}>
-          {value}
+          class='cell'
+          style:background-color={fillColors[i]}
+          style:color={textColors[i]}
+          contenteditable={editable}
+          on:input={e => handleInput(e, i)}
+          on:focusout={e => handleUnfocus(e, i)}
+          transition:fade={{duration: 300}}>
+          <div
+            class='text'
+            style:width='min-content'
+            style:border-bottom={editable ? '1px dotted var(--text-primary)' : 'none'}>
+            {value}
+          </div>
         </div>
-      </div>
-    {/each}
+      {/each}
+    {/if}
   </div>
   {#if subtitle}
     {@html subtitle}
@@ -63,8 +82,10 @@
         border-radius: 0;
         transition: background-color 0.3s, color 0.3s;
       }
+
+      .cell + .cell {
+        border-left: 2px solid var(--primary);
+      }
     }
   }
-
-
 </style>
