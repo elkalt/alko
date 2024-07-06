@@ -6,6 +6,7 @@
   import While from '$lib/components/pseudocode/While.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
   import If from '$lib/components/pseudocode/If.svelte';
+  import Else from '$lib/components/pseudocode/Else.svelte';
   import Call from '$lib/components/pseudocode/Call.svelte';
   import { k } from '$lib/KatexMacro';
 
@@ -58,7 +59,7 @@
 
   function selectionSort() {
     if (curStep >= endStep) return;
-    for (sortedBound = 0; sortedBound < sortedArray.length; sortedBound++) {
+    for (sortedBound = 0; sortedBound < sortedArray.length;) {
       smallest = sortedBound;
       if (++curStep >= endStep) {
         breakpoint = 0;
@@ -72,7 +73,7 @@
         if (sortedArray[check] < sortedArray[smallest]) {
           smallest = check;
           if (++curStep >= endStep) {
-            breakpoint = 1;
+            breakpoint = 2;
             return;
           };
         }
@@ -80,6 +81,13 @@
       let temp = sortedArray[smallest];
       sortedArray[smallest] = sortedArray[sortedBound];
       sortedArray[sortedBound] = temp;
+      smallest = -1;
+      check = -1
+      sortedBound++;
+      if (++curStep >= endStep) {
+        breakpoint = 3;
+        return;
+      };
     }
     sortedBound = -1;
     smallest = -1;
@@ -128,12 +136,13 @@ Selection sort is a simple sorting algorithm that finds the smallest element in 
   <Procedure args={['A']}>SelectionSort</Procedure>
     <Line>{@html k('i \\gets 0')}</Line>
     <While>{@html k('i \\lt |A|')}</While>
-      <Line>{@html k('j, k \\gets i')}</Line>
+      <Line spotlight={breakpoint == 0}>{@html k('j, k \\gets i')}</Line>
       <While>{@html k('j \\lt |A|')}</While>
-        <If>{@html k('A[j] < A[k]')}</If>
-          <Line>{@html k('k \\gets j')}</Line>
-        <Line breakCount={1}>{@html k('j \\gets j + 1')}</Line>
-      <Line breakCount={1}><Call>Swap</Call>{@html k('(A[i], A[k])')}</Line>
+        <If>{@html k('A[j] > A[k]')}</If>
+          <Line spotlight={breakpoint == 1}>{@html k('j \\gets j + 1')}</Line>
+        <Else></Else>
+          <Line spotlight={breakpoint == 2}>{@html k('k \\gets j')}</Line>
+      <Line breakCount={2} spotlight={breakpoint == 3}><Call>Swap</Call>{@html k('(A[i], A[k])')}</Line>
 </Algorithm>
 
 <h2 id='complexity'>Time Complexity</h2>
