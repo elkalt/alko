@@ -54,7 +54,7 @@
 
   function insertionSort() {
     if (curStep >= endStep) return;
-    for (sortedBound = 0; sortedBound < sortedArray.length; sortedBound++) {
+    for (sortedBound = 0; sortedBound < sortedArray.length;) {
       currentInsert = sortedBound;
       if (++curStep >= endStep) {
         breakpoint = 0;
@@ -70,9 +70,13 @@
           return;
         };
       }
+      sortedBound++;
+      currentInsert = -1;
+      if (++curStep >= endStep) {
+        breakpoint = curStep == maxStep ? -1 : 2;
+        return;
+      };
     }
-    curStep++;
-    currentInsert = -1;
     return;
   }
 </script>
@@ -119,7 +123,7 @@ Insertion sort is a simple sorting algorithm that iterates over all items in the
       <Line spotlight={breakpoint == 0}>{@html k('j \\gets i')}</Line>
       <While>{@html k('j \\ge 0')} <b>and</b> {@html k('A[j-1] \\ge A[j]')}</While>
         <Line spotlight={breakpoint == 1}><Call>Swap</Call>{@html k('(A[j-1], A[j])')}</Line>
-      <Line breakCount={1}>{@html k('i \\gets i + 1')}</Line>
+      <Line breakCount={1} spotlight={breakpoint == 2}>{@html k('i \\gets i + 1')}</Line>
 </Algorithm>
 
 <h2 id='complexity'>Time Complexity</h2>
