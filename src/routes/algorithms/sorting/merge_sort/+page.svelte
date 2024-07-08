@@ -296,7 +296,7 @@
   Therefore the time complexity is {@html k('O(n \\log n)')} by the master theorem.
 </p>
 
-<style lang="scss">
+<style lang='scss'>
   .merge-arrays {
     display: flex;
     width: 100%;
