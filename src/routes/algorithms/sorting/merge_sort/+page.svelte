@@ -11,7 +11,10 @@
   import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
   import { k } from '$lib/KatexMacro';
-    import Tree from '$lib/components/Tree.svelte';
+  import Tree from '$lib/components/ListRecursionTree.svelte';
+
+  let tree: Tree;
+  let iterNum: number;
 
   let arrayLength = 5;
 
@@ -31,6 +34,11 @@
       mergeSortInit();
       maxStep = curStep;
       endStep = 0;
+      if (tree) {
+        tree.clear();
+        iterNum = 0;
+        buildRecursionTree(slicedArray, 0);
+      }
     }
   }
   $: {
@@ -97,12 +105,15 @@
     merging = false;
     sortedArray = slicedArray.slice();
     breakpoint = -1;
+    iterNum = 0;
     mergeSort();
+    if (tree) tree.highlightNode(iterNum);
   }
 
   function mergeSort() {
     if (currentArrayLeftIndex >= currentArrayRightIndex) return;
-    if (curStep >= endStep) return;
+    if (curStep >= endStep) return;  // This just stops the first iteration from highlighting anything
+    let myKey = ++iterNum;
   
     let middle = currentArrayLeftIndex + Math.floor((currentArrayRightIndex - currentArrayLeftIndex) / 2);
     let oldLeft = currentArrayLeftIndex;
@@ -112,6 +123,7 @@
     if (++curStep >= endStep) {
       if (currentArrayRightIndex == currentArrayLeftIndex) breakpoint = 1;
       else breakpoint = 2;
+      iterNum = myKey;
       return
     };
     mergeSort();
@@ -122,6 +134,7 @@
     if (++curStep >= endStep) {
       if (currentArrayRightIndex == currentArrayLeftIndex) breakpoint = 1;
       else breakpoint = 3;
+      iterNum = myKey;
       return
     };
     mergeSort();
@@ -139,6 +152,7 @@
     rightMergeIndex = -1;
     if (++curStep >= endStep) {
       breakpoint = 4;
+      iterNum = myKey;
       return
     };
     merge();
@@ -197,6 +211,19 @@
     breakpoint = 9;
     return;
   }
+
+  function buildRecursionTree(array: number[], parentId: number) {
+    let myKey = ++iterNum;
+    tree.addNode({ key: myKey, list: array }, parentId);
+    if (array.length == 1) return;
+    
+    let middle = Math.floor(array.length / 2);
+    let leftArray = array.slice(0, middle);
+    let rightArray = array.slice(middle);
+
+    buildRecursionTree(leftArray, myKey);
+    buildRecursionTree(rightArray, myKey);
+  }
 </script>
 
 <svelte:head>
@@ -229,6 +256,8 @@
   Input size {@html k('n=' + arrayLength)}:
   <input type='range' min='1' max='10' step='1' bind:value={arrayLength} />
 </div>
+
+<Tree bind:this={tree}/>
 
 <div class='center'>
   <AlkoArray

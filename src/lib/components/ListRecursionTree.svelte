@@ -1,13 +1,11 @@
 <script lang="ts">
   import { Diagram, Node, GraphLinksModel, Shape, TextBlock, TreeLayout, Link, Routing, HTMLInfo, Panel, Adornment, Size, Spot, type ObjectData } from "gojs";
   import { onMount } from "svelte";
-
-  export let root: ObjectData;
-
+  
   let canvas: HTMLCanvasElement;
   let diagramDiv: HTMLDivElement;
   let diagram: Diagram;
-
+  
   onMount(() => {
     canvas = document.createElement('canvas')
     let style = getComputedStyle(document.body);
@@ -33,7 +31,7 @@
     altTextSpot.y -= 0.35;
     diagram.nodeTemplate = new Node(
       'Spot', {
-        selectionAdorned: false
+        selectable: false,
       }
     ).add(
       new Shape("Circle", {
@@ -65,12 +63,12 @@
       new Shape({ strokeWidth: 2, stroke: linkColor })
     );
 
-    diagram.model = new GraphLinksModel({nodeDataArray: [root]});
+    diagram.model = new GraphLinksModel();
   });
 
   export function addNode(node: ObjectData, parentId: number) {
     diagram.model.addNodeData(node);
-    (diagram.model as GraphLinksModel).addLinkData({ from: parentId, to: node.key });
+    if (parentId != 0) (diagram.model as GraphLinksModel).addLinkData({ from: parentId, to: node.key });
   }
 
   export function removeNode(node: ObjectData) {
@@ -82,6 +80,16 @@
     }
     for (let link of linksToRemove) diagramModel.removeLinkData(link);
     diagram.model.removeNodeData(node);
+  }
+
+  export function clear() {
+    diagram.model = new GraphLinksModel();
+  }
+
+  export function highlightNode(nodeId: number) {
+    console.log(nodeId)
+    let node = diagram.findNodeForKey(nodeId);
+    if (node) node.addAdornment('Highlight', new Adornment().add(new Shape('Circle', { fill: 'red', width: 200, height: 200 })));
   }
 
   function getTextWidth(text: string) {
