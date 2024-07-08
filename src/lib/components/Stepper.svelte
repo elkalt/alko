@@ -1,5 +1,5 @@
-<script lang="ts">
-  import { createEventDispatcher } from "svelte";
+<script lang='ts'>
+  import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -46,7 +46,7 @@
   <div class='center'>Step {endStep}/{maxStep}</div>
 </div>
 
-<style lang="scss">
+<style lang='scss'>
   .stepper {
     display: grid;
     grid-template-rows: repeat(3, 1fr);

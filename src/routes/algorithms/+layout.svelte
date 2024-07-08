@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang='ts'>
   import { onMount, onDestroy } from 'svelte';
 
   let isMobile: boolean = false;
@@ -72,7 +72,7 @@
   <slot />
 </div>
 
-<style lang="scss">
+<style lang='scss'>
   .content {
     display: flex;
     flex-direction: column;

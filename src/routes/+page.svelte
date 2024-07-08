@@ -51,7 +51,7 @@
   {/each}
 </div>
 
-<style lang="scss">
+<style lang='scss'>
   .parent-container {
     width: 50%;
     margin-left: auto;
