@@ -1,13 +1,15 @@
 <script lang="ts">
-  import { Diagram, Node, GraphLinksModel, Shape, TextBlock, TreeLayout, Link, Routing, HTMLInfo, Panel, Adornment, Size, Spot } from "gojs";
+  import { Diagram, Node, GraphLinksModel, Shape, TextBlock, TreeLayout, Link, Routing, HTMLInfo, Panel, Adornment, Size, Spot, type ObjectData } from "gojs";
   import { onMount } from "svelte";
 
-  export let rootNode: { key: number, text: string };
+  export let root: ObjectData;
 
+  let canvas: HTMLCanvasElement;
   let diagramDiv: HTMLDivElement;
   let diagram: Diagram;
 
   onMount(() => {
+    canvas = document.createElement('canvas')
     let style = getComputedStyle(document.body);
     let primary = style.getPropertyValue('--primary');
     let linkColor = style.getPropertyValue('--text-secondary');
@@ -15,7 +17,6 @@
     
     diagram = new Diagram(diagramDiv, {
       allowMove: false,
-      'toolManager.hoverDelay': 5,
     })
 
     diagram.layout = new TreeLayout({
@@ -26,20 +27,15 @@
       layerSpacing: 20,
     });
 
-    diagram.nodeTemplate = new Node("Spot", {
-      selectionAdorned: false,
-      toolTip: new Adornment().add(
-        new Shape("RoundedRectangle", {
-          fill: textColor,
-          strokeWidth: 0,
-        }),
-        new TextBlock({
-          margin: 5,
-          font: 'bold 14px Quattrocento',
-          stroke: primary
-        }).bind("text")
-      )
-    }).add(
+    let primaryTextSpot = Spot.Center.copy();
+    primaryTextSpot.y -= 0.1;
+    let altTextSpot = Spot.Bottom.copy();
+    altTextSpot.y -= 0.35;
+    diagram.nodeTemplate = new Node(
+      'Spot', {
+        selectionAdorned: false
+      }
+    ).add(
       new Shape("Circle", {
         fill: primary,
         width: 100,
@@ -48,35 +44,51 @@
       new TextBlock({
         font: 'bold 20px Quattrocentro',
         stroke: textColor,
-      }).bind("text")
+        alignment: primaryTextSpot,
+      }).bind('text', 'key'),
+      new Shape('RoundedRectangle', {
+        fill: primary,
+        alignment: altTextSpot,
+        height: 25,
+        strokeWidth: 0,
+      }).bind('width', 'list', (list: number[]) => getTextWidth(`[${list.join(', ')}]`) + 10),
+      new TextBlock({
+        font: 'bold 15px Quattrocentro',
+        stroke: textColor,
+        alignment: altTextSpot,
+      }).bind('text', 'list', (list: number[]) => `[${list.join(', ')}]`)
     );
 
     diagram.linkTemplate = new Link(
       { routing: Routing.Normal, fromEndSegmentLength: 0, toEndSegmentLength: 0 }
     ).add(
-      new Shape({ strokeWidth: 1, stroke: linkColor })
-    )
+      new Shape({ strokeWidth: 2, stroke: linkColor })
+    );
 
-    diagram.model = new GraphLinksModel({
-      nodeDataArray: [
-        { key: 1, text: "Root" },
-        { key: 2, text: "Left" },
-        { key: 3, text: "Right" },
-        { key: 4, text: "LL" },
-        { key: 5, text: "LR" },
-        { key: 6, text: "RL" },
-        { key: 7, text: "RR" }
-      ],
-      linkDataArray: [
-        { from: 1, to: 2 },
-        { from: 1, to: 3 },
-        { from: 2, to: 4 },
-        { from: 2, to: 5 },
-        { from: 3, to: 6 },
-        { from: 3, to: 7 }
-      ]
-    });
+    diagram.model = new GraphLinksModel({nodeDataArray: [root]});
   });
+
+  export function addNode(node: ObjectData, parentId: number) {
+    diagram.model.addNodeData(node);
+    (diagram.model as GraphLinksModel).addLinkData({ from: parentId, to: node.key });
+  }
+
+  export function removeNode(node: ObjectData) {
+    let linksToRemove = [];
+    let diagramModel = diagram.model as GraphLinksModel;
+    for (let link of diagramModel.linkDataArray) {
+      if (link.from === node.key) return;  // Only remove leaf nodes
+      if (link.to === node.key) linksToRemove.push(link);
+    }
+    for (let link of linksToRemove) diagramModel.removeLinkData(link);
+    diagram.model.removeNodeData(node);
+  }
+
+  function getTextWidth(text: string) {
+    let context = canvas.getContext('2d');
+    context!.font = 'bold 15px Quattrocentro';
+    return context!.measureText(text).width;
+  }
 </script>
 
 <div bind:this={diagramDiv} style="border: solid 1px black; width:800px; height:800px"></div>
