@@ -11,6 +11,7 @@
   import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
   import { k } from '$lib/KatexMacro';
+    import Tree from '$lib/components/Tree.svelte';
 
   let arrayLength = 5;
 
@@ -213,7 +214,6 @@
 <p>
   Any two sorted arrays can be sorted in linear time by iterating over each array and selecting the smaller element each time.
 </p>
-
 
 <h2 id='visualization'>Visualization</h2>
 <div>
