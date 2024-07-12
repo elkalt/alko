@@ -1,4 +1,6 @@
 <script lang='ts'>
+  import type { TreeNode } from '$lib/components/graphs/Node.svelte';
+  import { k } from '$lib/KatexMacro';
   import AlkoArray from '$lib/components/AlkoArray.svelte';
   import Algorithm from '$lib/components/pseudocode/Algorithm.svelte';
   import Line from '$lib/components/pseudocode/Line.svelte';
@@ -10,9 +12,10 @@
   import Else from '$lib/components/pseudocode/Else.svelte';
   import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
-  import { k } from '$lib/KatexMacro';
+  import Node from '$lib/components/graphs/Node.svelte';
 
   let arrayLength = 5;
+  let root: TreeNode;
 
   let array: number[] = [9, 5, 7, 10, 2, 4, 3, 1, 8, 6];
   let slicedArray: number[];
@@ -29,7 +32,7 @@
       endStep = 200;
       mergeSortInit();
       maxStep = curStep;
-      endStep = 0;
+      endStep = maxStep;
     }
   }
   $: {
@@ -96,10 +99,11 @@
     merging = false;
     sortedArray = slicedArray.slice();
     breakpoint = -1;
-    mergeSort();
+    root = { value: arrayLength, height: 1, left: null, right: null };
+    mergeSort(root);
   }
 
-  function mergeSort() {
+  function mergeSort(node: TreeNode) {
     if (currentArrayLeftIndex >= currentArrayRightIndex) return;
     if (curStep >= endStep) return;
   
@@ -113,7 +117,9 @@
       else breakpoint = 2;
       return
     };
-    mergeSort();
+    node.left = { value: middle - oldLeft + 1, height: 1, left: null, right: null };
+    mergeSort(node.left);
+    node.height = node.left.height + 1;
     if (curStep >= endStep) return;
 
     currentArrayLeftIndex = middle + 1;
@@ -123,7 +129,9 @@
       else breakpoint = 3;
       return
     };
-    mergeSort();
+    node.right = { value: oldRight - middle, height: 1, left: null, right: null };
+    mergeSort(node.right);
+    node.height = Math.max(node.height, node.right.height + 1);
     if (curStep >= endStep) return;
 
     currentArrayLeftIndex = oldLeft;
@@ -255,6 +263,9 @@
 </div>
 
 <Stepper endStep={endStep} maxStep={maxStep} on:step={e => endStep = e.detail} />
+
+<h2 id='recursion_tree'>Recursion Tree</h2>
+<Node bind:root />
 
 <h2 id='pseudocode'>Pseudocode</h2>
 <Algorithm name='Merge Sort'>
