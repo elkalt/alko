@@ -76,10 +76,9 @@
       .cell {
         display: flex;
         justify-content: center;
-        padding: 1rem 0;
-        width: 3rem;
-        border: 0;
-        border-radius: 0;
+        align-items: center;
+        width: 3.5rem;
+        aspect-ratio: 1;
         transition: background-color 0.3s, color 0.3s;
       }
 
