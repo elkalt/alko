@@ -6,7 +6,7 @@
   import While from '$lib/components/pseudocode/While.svelte';
   import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
-  import { k } from '$lib/KatexMacro';
+  import { k } from '$lib/scripts/katex';
 
   let arrayLength = 5;
 

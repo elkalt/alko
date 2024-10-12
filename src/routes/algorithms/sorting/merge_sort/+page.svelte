@@ -10,7 +10,9 @@
   import Else from '$lib/components/pseudocode/Else.svelte';
   import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
-  import { k } from '$lib/KatexMacro';
+  import { k } from '$lib/scripts/katex';
+  import Graph from '$lib/components/graphs/Graph.svelte';
+  
 
   let arrayLength = 5;
 
@@ -256,6 +258,9 @@
 
 <Stepper endStep={endStep} maxStep={maxStep} on:step={e => endStep = e.detail} />
 
+<h2 id='Recursion Tree'>Recursion Tree</h2>
+<Graph {nodes} {edges} />
+
 <h2 id='pseudocode'>Pseudocode</h2>
 <Algorithm name='Merge Sort'>
   <Procedure args={['A']}>MergeSort</Procedure>
@@ -297,11 +302,11 @@
 </p>
 
 <style lang='scss'>
-  .merge-arrays {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    margin: 0 auto;
-    gap: 2rem;
-  }
+.merge-arrays {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 2rem;
+}
 </style>

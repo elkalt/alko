@@ -8,7 +8,7 @@
   import If from '$lib/components/pseudocode/If.svelte';
   import Else from '$lib/components/pseudocode/Else.svelte';
   import Call from '$lib/components/pseudocode/Call.svelte';
-  import { k } from '$lib/KatexMacro';
+  import { k } from '$lib/scripts/katex';
 
   let arrayLength = 5;
 

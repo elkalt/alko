@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import { k } from '$lib/KatexMacro';
+  import { k } from '$lib/scripts/katex';
   import Call from './Call.svelte';
   import Line from './Line.svelte';
 
