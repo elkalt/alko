@@ -258,9 +258,6 @@
 
 <Stepper endStep={endStep} maxStep={maxStep} on:step={e => endStep = e.detail} />
 
-<h2 id='Recursion Tree'>Recursion Tree</h2>
-<Graph {nodes} {edges} />
-
 <h2 id='pseudocode'>Pseudocode</h2>
 <Algorithm name='Merge Sort'>
   <Procedure args={['A']}>MergeSort</Procedure>
