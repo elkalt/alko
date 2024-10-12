@@ -11,8 +11,6 @@
   import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
   import { k } from '$lib/scripts/katex';
-  import Graph from '$lib/components/graphs/Graph.svelte';
-  
 
   let arrayLength = 5;
 
