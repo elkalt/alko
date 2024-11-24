@@ -1,4 +1,5 @@
 <script lang='ts'>
+  import Fraction from 'fraction.js';
   import AlkoArray from '$lib/components/AlkoArray.svelte';
   import Algorithm from '$lib/components/pseudocode/Algorithm.svelte';
   import Line from '$lib/components/pseudocode/Line.svelte';
@@ -14,11 +15,11 @@
 
   let arrayLength = 5;
 
-  let array: number[] = [9, 5, 7, 10, 2, 4, 3, 1, 8, 6];
-  let slicedArray: number[];
+  let array: Fraction[] = [9, 5, 7, 10, 2, 4, 3, 1, 8, 6].map(value => new Fraction(value));
+  let slicedArray: Fraction[];
   $: slicedArray = array.slice(0, arrayLength);
 
-  let sortedArray: number[];
+  let sortedArray: Fraction[];
   $: if (slicedArray) mergeSortInit();
 
   let endStep = 0;
@@ -42,8 +43,8 @@
   let finalFillColors: string[];
   let finalTextColors: string[];
   let merging: boolean = false;
-  let leftMergeArray: number[];
-  let rightMergeArray: number[];
+  let leftMergeArray: Fraction[];
+  let rightMergeArray: Fraction[];
   let leftMergeIndex: number = 0;
   let rightMergeIndex: number = 0;
   let insertIndex: number = 0;
@@ -80,8 +81,8 @@
       });
     } else {
       finalTextColors = Array(arrayLength).fill('var(--text-primary)');
-      leftMergeArray = leftMergeArray ? leftMergeArray.slice(0, 1) : [1];
-      rightMergeArray = rightMergeArray ? rightMergeArray.slice(0, 1) : [1];
+      leftMergeArray = leftMergeArray ? leftMergeArray.slice(0, 1) : [new Fraction(1)];
+      rightMergeArray = rightMergeArray ? rightMergeArray.slice(0, 1) : [new Fraction(1)];
       leftTextColors = ['transparent'];
       rightTextColors = ['transparent'];
       leftFillColors = [];

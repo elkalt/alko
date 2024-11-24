@@ -1,4 +1,5 @@
 <script lang='ts'>
+  import Fraction from 'fraction.js';
   import AlkoArray from '$lib/components/AlkoArray.svelte';
   import Algorithm from '$lib/components/pseudocode/Algorithm.svelte';
   import Line from '$lib/components/pseudocode/Line.svelte';
@@ -12,11 +13,11 @@
 
   let arrayLength = 5;
 
-  let array: number[] = [9, 5, 7, 10, 2, 4, 3, 1, 8, 6];
-  let slicedArray: number[];
+  let array: Fraction[] = [9, 5, 7, 10, 2, 4, 3, 1, 8, 6].map(value => new Fraction(value));
+  let slicedArray: Fraction[];
   $: slicedArray = array.slice(0, arrayLength);
 
-  let sortedArray: number[];
+  let sortedArray: Fraction[];
   $: if (slicedArray) selectionSortInit();
 
   let endStep = 0;
