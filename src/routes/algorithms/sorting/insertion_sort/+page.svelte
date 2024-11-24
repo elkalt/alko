@@ -7,7 +7,7 @@
   import While from '$lib/components/pseudocode/While.svelte';
   import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
-  import { k } from '$lib/scripts/katex';
+  import { k, kall } from '$lib/scripts/katex';
 
   let arrayLength = 5;
 
@@ -123,7 +123,7 @@ Insertion sort is a simple sorting algorithm that iterates over all items in the
     <While>{@html k('i \\lt |A|')}</While>
       <Line spotlight={breakpoint == 0}>{@html k('j \\gets i')}</Line>
       <While>{@html k('j \\ge 0')} <b>and</b> {@html k('A[j-1] \\ge A[j]')}</While>
-        <Line spotlight={breakpoint == 1}><Call>Swap</Call>{@html k('(A[j-1], A[j])')}</Line>
+        <Line spotlight={breakpoint == 1}>{@html k(kall('swap') + '(A[j-1], A[j])')}</Line>
       <Line breakCount={1} spotlight={breakpoint == 2}>{@html k('i \\gets i + 1')}</Line>
 </Algorithm>
 
