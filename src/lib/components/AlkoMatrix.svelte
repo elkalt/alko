@@ -16,6 +16,35 @@
   let dispValues: Fraction[][];
   $: dispValues = values.map((row) => row.slice());
 
+  $: {
+    if (fillColors.length < values.length) {
+      for (let i = 0; i < values.length; i++) {
+        if (!fillColors[i]) {
+          fillColors[i] = Array(values[i].length).fill("transparent");
+          continue;
+        }
+        if (fillColors[i].length < values[i].length) {
+          fillColors[i].push(
+            ...Array(values[i].length - fillColors[i].length).fill("transparent"),
+          );
+        }
+      }
+    }
+    if (textColors.length < values.length) {
+      for (let i = 0; i < values.length; i++) {
+        if (!textColors[i]) {
+          textColors[i] = Array(values[i].length).fill("var(--text-primary)");
+          continue;
+        }
+        if (textColors[i].length < values[i].length) {
+          textColors[i].push(
+            ...Array(values[i].length - textColors[i].length).fill("var(--text-primary)"),
+          );
+        }
+      }
+    }
+  }
+
   const regex = /^[0-9]*((\/|.|\,)[0-9]*)?$/;
   let focusedi: number = -1;
   let focusedj: number = -1;
@@ -40,10 +69,10 @@
 
   function handleInput(e: Event) {
     const target = e.target as HTMLInputElement;
-    const invalidChars = target.value.split('').some(char => 
-      !'0123456789/,.'.includes(char)
-    );
-    
+    const invalidChars = target.value
+      .split("")
+      .some((char) => !"0123456789/,.-".includes(char));
+
     if (invalidChars) {
       target.value = newValue;
       return;
@@ -80,7 +109,7 @@
   <div class="array">
     {#if dispValues}
       {#each dispValues as row, i}
-        <div class="row">
+        <div class="row" transition:fade={{ duration: 300 }}>
           {#each row as value, j}
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <div
