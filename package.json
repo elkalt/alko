@@ -22,6 +22,7 @@
 	"type": "module",
 	"dependencies": {
 		"@types/katex": "^0.16.7",
+		"fraction.js": "^5.2.1",
 		"katex": "^0.16.10",
 		"sass": "^1.77.2"
 	}
