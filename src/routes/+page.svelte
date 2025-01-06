@@ -1,9 +1,9 @@
-<script lang='ts'>
+<script lang="ts">
   const { url } = import.meta;
   const modules = import.meta.glob('./**/*.svelte'); // Include subfolder
 
-  const topics = ['Sorting']
-  
+  const topics = ['Sorting', 'Matrices'];
+
   function getPages(topic: string) {
     // https://github.com/sveltejs/kit/issues/923#issuecomment-1567052262
     const directory = url
@@ -11,9 +11,9 @@
       .replace(/(.*?)\/immutable\/pages\//, '/')
       .replace(/(.*?)\/var\/task\//, '/') // Vercel
       .replace(/\/([^/])*.svelte.*/, '/');
-  
+
     const pageRegex = /\/\+page\.svelte$/;
-    const topicRegex = /sorting\/.+\/\+page\.svelte$/;
+    const topicRegex = new RegExp(`${topic.toLowerCase()}\/.+\/\\+page\\.svelte$`);
 
     const paths = Object.keys(modules)
       // Convert relative path to absolute path
@@ -35,23 +35,30 @@
 
 <svelte:head>
   <title>Alko</title>
-  <meta name='description' content='Algorithm visualizations and explanations' />
+  <meta name="description" content="Algorithm visualizations and explanations" />
 </svelte:head>
 
-<div class='parent-container'>
+<div class="parent-container">
   {#each topics as topic}
     <h1>{topic}</h1>
     <ul>
       {#each getPages(topic.toLowerCase()) as path}
         <!-- truncate path, capitalize first letter, replace _ with space -->
         {@const i = path.lastIndexOf('/') + 1}
-        <li><a href={path}>{(path.charAt(i).toLocaleUpperCase() + path.slice(i + 1)).replaceAll('_', ' ')}</a></li>
+        <li>
+          <a href={path}
+            >{(path.charAt(i).toLocaleUpperCase() + path.slice(i + 1)).replaceAll(
+              '_',
+              ' '
+            )}</a
+          >
+        </li>
       {/each}
     </ul>
   {/each}
 </div>
 
-<style lang='scss'>
+<style lang="scss">
   .parent-container {
     width: 50%;
     margin-left: auto;
