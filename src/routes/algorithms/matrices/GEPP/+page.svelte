@@ -3,8 +3,6 @@
   import Algorithm from '$lib/components/pseudocode/Algorithm.svelte';
   import Line from '$lib/components/pseudocode/Line.svelte';
   import Procedure from '$lib/components/pseudocode/Procedure.svelte';
-  import While from '$lib/components/pseudocode/While.svelte';
-  import Call from '$lib/components/pseudocode/Call.svelte';
   import Stepper from '$lib/components/Stepper.svelte';
   import { k, kall } from '$lib/scripts/katex';
   import Fraction from 'fraction.js';
@@ -260,7 +258,6 @@
 <h1 id="Gaussian Elimination with Partial Pivoting">
   Gaussian Elimination with Partial Pivoting
 </h1>
-{breakpoint}
 <h2 id="overview">Overview</h2>
 Gaussian elimination with partial pivoting (GEPP) is an algorithm used to solve systems of
 linear equations.
@@ -290,23 +287,23 @@ linear equations.
 <Algorithm name='Gaussian Elimination with Partial Pivoting'>
   <Procedure args={['A', 'b']}>GEPP</Procedure>
     <For>{@html k('i\\gets 1\\text{ to }n')}</For>
-      <Line>{@html k('\\underset{k}{' + kall('argmax') + '}(A_{(k, i)})')}</Line>
-      <If>{@html k('k\\ne i')}</If>
-        <Line>{@html k(kall('swap') + '(A_{i}, A_{k})')}</Line>
-        <Line>{@html k(kall('swap') + '(b_{i}, b_{k})')}</Line>
-      <For breakCount={1}>{@html k('j\\gets i+1\\text{ to }n')}</For>
-        <Line>{@html k('m\\; \\gets \\frac{A_{(j, i)}}{A_{(i, i)}}')}</Line>
-        <Line>{@html k('A_{j} \\gets A_{j} - mA_{i}')}</Line>
-        <Line>{@html k('b_{j}\\,\\, \\gets b_{j} - mb_{i}')}</Line>
+      <Line spotlight={[0, 1, 2].includes(breakpoint)}>{@html k('\\underset{k}{' + kall('argmax') + '}(A_{(k, i)})')}</Line>
+      <If spotlight={breakpoint == 3}>{@html k('k\\ne i')}</If>
+        <Line spotlight={breakpoint == 3}>{@html k(kall('swap') + '(A_{i}, A_{k})')}</Line>
+        <Line spotlight={breakpoint == 3}>{@html k(kall('swap') + '(b_{i}, b_{k})')}</Line>
+      <For breakCount={1} spotlight={[4, 5].includes(breakpoint)}>{@html k('j\\gets i+1\\text{ to }n')}</For>
+        <Line spotlight={[4, 5].includes(breakpoint)}>{@html k('m\\; \\gets \\frac{A_{(j, i)}}{A_{(i, i)}}')}</Line>
+        <Line spotlight={[4, 5].includes(breakpoint)}>{@html k('A_{j} \\gets A_{j} - mA_{i}')}</Line>
+        <Line spotlight={[4, 5].includes(breakpoint)}>{@html k('b_{j}\\,\\, \\gets b_{j} - mb_{i}')}</Line>
     <For breakCount={2}>{@html k('i\\gets n\\text{ to }1')}</For>
-      <For>{@html k('j\\gets i-1\\text{ to }1')}</For>
-        <Line>{@html k('m\\; \\gets \\frac{A_{(j, i)}}{A_{(i, i)}}')}</Line>
-        <Line>{@html k('A_{j} \\gets A_{j} - m A_{i}')}</Line>
-        <Line>{@html k('b_{j}\\,\\, \\gets b_{j} - m b_{i}')}</Line>
-    <For breakCount={2}>{@html k('i\\gets 1\\text{ to }n')}</For>
-      <Line>{@html k('m\\;\\;\\;\\; \\gets \\frac{1}{A_{(i, i)}}')}</Line>
-      <Line>{@html k('A_{(i, i)} \\gets mA_{(i,i)}')}</Line>
-      <Line>{@html k('b_{i}\\;\\;\\;\\;\\, \\gets mb_{i}')}</Line>
+      <For spotlight={[6, 7].includes(breakpoint)}>{@html k('j\\gets i-1\\text{ to }1')}</For>
+        <Line spotlight={[6, 7].includes(breakpoint)}>{@html k('m\\; \\gets \\frac{A_{(j, i)}}{A_{(i, i)}}')}</Line>
+        <Line spotlight={[6, 7].includes(breakpoint)}>{@html k('A_{j} \\gets A_{j} - m A_{i}')}</Line>
+        <Line spotlight={[6, 7].includes(breakpoint)}>{@html k('b_{j}\\,\\, \\gets b_{j} - m b_{i}')}</Line>
+    <For breakCount={2} spotlight={[8, 9].includes(breakpoint)}>{@html k('i\\gets 1\\text{ to }n')}</For>
+      <Line spotlight={[8, 9].includes(breakpoint)}>{@html k('m\\;\\;\\;\\; \\gets \\frac{1}{A_{(i, i)}}')}</Line>
+      <Line spotlight={[8, 9].includes(breakpoint)}>{@html k('A_{(i, i)} \\gets mA_{(i,i)}')}</Line>
+      <Line spotlight={[8, 9].includes(breakpoint)}>{@html k('b_{i}\\;\\;\\;\\;\\, \\gets mb_{i}')}</Line>
 </Algorithm>
 
 <h2 id='complexity'>Time Complexity</h2>
