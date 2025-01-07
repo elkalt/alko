@@ -38,7 +38,7 @@
     margin-left: auto;
     margin-right: auto;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 920px) {
       width: 100%;
     }
   }

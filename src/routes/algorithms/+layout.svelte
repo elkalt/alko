@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
 
   let isMobile: boolean = false;
-  const handleResize = () => isMobile = window.innerWidth < 768;
+  const handleResize = () => isMobile = window.innerWidth < 920;
 
   let headings: Element[] = [];
   let headerHeight: number;
